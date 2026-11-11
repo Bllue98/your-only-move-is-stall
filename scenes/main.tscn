@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_game"]
+[ext_resource type="Script" path="res://scripts/ball.gd" id="2_ball"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="3_player"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="4_ui"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_field"]
+size = Vector2(40, 24)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ball"]
+radius = 0.22
+height = 0.44
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_field"]
+albedo_color = Color(0.25, 0.55, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_ball"]
+albedo_color = Color(0.95, 0.95, 0.95, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_blue"]
+albedo_color = Color(0.1, 0.2, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_red"]
+albedo_color = Color(0.9, 0.1, 0.1, 1)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_game")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.286788, 0.409576, 0, 0.819152, 0.573576, -0.5, -0.496732, 0.709406, 0, 10, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+projection = 1
+size = 30.0
+
+[node name="Field" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_field")
+surface_material_override/0 = SubResource("Mat_field")
+
+[node name="Ball" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+script = ExtResource("2_ball")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ball"]
+mesh = SubResource("SphereMesh_ball")
+surface_material_override/0 = SubResource("Mat_ball")
+
+[node name="PlayerA" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
+script = ExtResource("3_player")
+
+[node name="Mesh" type="MeshInstance3D" parent="PlayerA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_player")
+surface_material_override/0 = SubResource("Mat_blue")
+
+[node name="PlayerB" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+script = ExtResource("3_player")
+
+[node name="Mesh" type="MeshInstance3D" parent="PlayerB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_player")
+surface_material_override/0 = SubResource("Mat_red")
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("4_ui")
